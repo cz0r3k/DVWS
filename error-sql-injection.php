@@ -25,11 +25,11 @@ $page_data = <<<EOT
     </div>
 </div>
 EOT;
-
+$wsUrl = sprintf('ws://%s:8080/%s', getenv('DVWS_HOST') ?? 'dvws.local', 'authenticate-user');
 $page_script= <<<EOT
 $(document).ready(function(){
 //Open a WS server connection
-var wsUri = "ws://dvws.local:8080/authenticate-user";
+var wsUri = "$wsUrl";
 websocket = new WebSocket(wsUri);
 
 //Connected to WS server

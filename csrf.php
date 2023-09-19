@@ -43,11 +43,12 @@ $page_data = <<<EOT
     </div>
 </div>
 EOT;
-
+$wsUrl = sprintf('ws://%s:8080/%s', getenv('DVWS_HOST') ?? 'dvws.local', 'authenticate-user-prepared-session');
+$wsUrl2 = sprintf('ws://%s:8080/%s', getenv('DVWS_HOST') ?? 'dvws.local', 'change-password');
 $page_script= <<<EOT
 $(document).ready(function(){
 //Open a WS server connection
-var wsUri = "ws://dvws.local:8080/authenticate-user-prepared-session";
+var wsUri = "$wsUrl";
 websocket = new WebSocket(wsUri);
 
 //Connected to WS server
@@ -87,7 +88,7 @@ $('#send').click(function()
 });
 
 //Open a WS server connection
-var wsUri2 = "ws://dvws.local:8080/change-password";
+var wsUri2 = "$wsUrl2";
 websocket2 = new WebSocket(wsUri2);
 
 //Connected to WS server

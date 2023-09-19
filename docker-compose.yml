@@ -1,0 +1,31 @@
+version: "3"
+services:
+  web:
+    container_name: DVWS_WEB
+    build: .
+    ports:
+      - 8080:8080 # Websocket
+      - 8888:8888 # Frontend
+    environment:
+      - HEARTBEAT_INTERVAL=30
+      - DB_HOST=db
+      - DB_USER=dvws
+      - DB_PASSWORD=DVWS
+      - DB_DATABASE=dvws
+      - DVWS_HOST
+    depends_on:
+      - db
+
+  db:
+    image: mysql
+    ports:
+      - "33060:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: SuperSecretPassw0rd
+      MYSQL_DATABASE: dvws
+      MYSQL_USER: dvws
+      MYSQL_PASSWORD: DVWS
+    volumes:
+      - dvws_db:/var/lib/mysql
+volumes:
+  dvws_db:

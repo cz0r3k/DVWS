@@ -25,11 +25,12 @@ $page_data = <<<EOT
     </div>
 </div>
 EOT;
-
+$wsUrl = sprintf('ws://%s:8080/%s', getenv('DVWS_HOST') ?? 'dvws.local', 'post-comments');
+$wsUrl2 = sprintf('ws://%s:8080/%s', getenv('DVWS_HOST') ?? 'dvws.local', 'show-comments');
 $page_script= <<<EOT
 $(document).ready(function(){
 //Open a WS server connection
-var wsUri = "ws://dvws.local:8080/post-comments";
+var wsUri = "$wsUrl";
 websocket = new WebSocket(wsUri);
 
 //Connected to WS server
@@ -69,7 +70,7 @@ $('#send').click(function()
 
 //Show comments
 //Open a WS server connection
-var wsUri2 = "ws://dvws.local:8080/show-comments";
+var wsUri2 = "$wsUrl2";
 websocket2 = new WebSocket(wsUri2);
 
 //Connected to WS server
