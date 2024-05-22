@@ -1,4 +1,3 @@
-version: "3"
 services:
   web:
     container_name: DVWS_WEB
@@ -12,7 +11,7 @@ services:
       - DB_USER=dvws
       - DB_PASSWORD=DVWS
       - DB_DATABASE=dvws
-      - DVWS_HOST
+      - DVWS_HOST=dvws.local
     depends_on:
       - db
 

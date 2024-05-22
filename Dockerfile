@@ -21,5 +21,6 @@ COPY --from=vendor /tmp/vendor/ /opt/DVWS/vendor/
 # Mysql Extension for php
 RUN docker-php-ext-install mysqli pdo_mysql && docker-php-ext-enable mysqli
 
-CMD ["chmod", "-x", "./docker-entrypoint.sh"]
-CMD ["./docker-entrypoint.sh"]
+RUN chmod -x ./docker-entrypoint.sh
+
+CMD ["sh","./docker-entrypoint.sh"]
