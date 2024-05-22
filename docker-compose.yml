@@ -2,6 +2,7 @@ services:
   web:
     container_name: DVWS_WEB
     build: .
+    image: cz0r3k/dvws
     ports:
       - 8080:8080 # Websocket
       - 8888:8888 # Frontend
