@@ -1,5 +1,8 @@
 <?php
 session_start();
+$contents = json_encode($_SESSION);
+$session_file = session_save_path()."/sess_".session_id();
+file_put_contents($session_file, $contents);
 $page_data = <<<EOT
 <div class="page-header">
     <h1>Change Password</h1>

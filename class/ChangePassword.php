@@ -11,11 +11,10 @@ class ChangePassword implements MessageComponentInterface
 		$this->clients = new \SplObjectStorage;
 	}
 
-	public function change_password($arr_data, $from)
+	public function change_password($arr_data, $from, $session_data)
 	{
 		$reply_data = "";
-		session_start();
-		if(isset($_SESSION['username']))
+		if(isset($session_data['username']))
 		{
 			try
 			{
@@ -66,9 +65,21 @@ class ChangePassword implements MessageComponentInterface
 	public function onMessage(ConnectionInterface $from, $msg)
 	{
 		echo "Received: change-password : " . $msg . "\n";
+        $cookiesRaw = $from->httpRequest->getHeader('Cookie');
+        $cookies = array();
+        foreach($cookiesRaw as $itm) {
+            list($key, $val) = explode('=', $itm, 2);
+            $cookies[$key] = $val;
+        }
+        $session_file = session_save_path()."/sess_".$cookies['PHPSESSID'];
+        if(!file_exists($session_file)) // The session doesn't exist
+            return ;
+        $contents = file_get_contents($session_file);
+        $session_data = json_decode($contents, true);
+
 		$arr_data = json_decode($msg,true);
 		$reply_data = "";
-		$this->change_password($arr_data, $from);
+		$this->change_password($arr_data, $from, $session_data);
 	}
 
 	public function onClose(ConnectionInterface $conn)
