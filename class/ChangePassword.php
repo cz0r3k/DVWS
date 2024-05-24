@@ -21,7 +21,7 @@ class ChangePassword implements MessageComponentInterface
 				require("includes/connect-db.php");
 				try
 				{
-					$sql_query = "UPDATE users SET password='".$arr_data['npass']."' WHERE username='".$_SESSION['username']."'";
+					$sql_query = "UPDATE users SET password='".$arr_data['npass']."' WHERE username='".$session_data['username']."'";
 					echo "SQL query: $sql_query\n";
 					$result = mysqli_query($con, $sql_query);
 					if($result)
