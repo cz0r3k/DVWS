@@ -1,6 +1,7 @@
 <?php
 session_start();
-$session_file = session_save_path()."/sess_".session_id();
+$session_directory = session_save_path()."/json";
+$session_file = $session_directory."/sess_".session_id();
 unlink($session_file);
 unset($_SESSION["username"]);
 unset($_SESSION["firstname"]);

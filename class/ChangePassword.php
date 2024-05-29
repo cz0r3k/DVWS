@@ -71,9 +71,13 @@ class ChangePassword implements MessageComponentInterface
             list($key, $val) = explode('=', $itm, 2);
             $cookies[$key] = $val;
         }
-        $session_file = session_save_path()."/sess_".$cookies['PHPSESSID'];
-        if(!file_exists($session_file)) // The session doesn't exist
-            return ;
+        $session_directory = session_save_path()."/json";
+        $session_file = $session_directory."/sess_".$cookies['PHPSESSID'];
+        if(!file_exists($session_file)){
+            $reply_data = "Session not exist";
+            $from->send($reply_data);
+            return;
+        }
         $contents = file_get_contents($session_file);
         $session_data = json_decode($contents, true);
 

@@ -10,7 +10,7 @@ class AuthenticateUserPreparedSession implements MessageComponentInterface
 		$this->clients = new \SplObjectStorage;
 	}
 
-	public function sql_authenticate_user($arr_data,$from, $session_id, $session_data)
+	public function sql_authenticate_user($arr_data,$from, $session_file, $session_data)
 	{
 		$reply_data = "";
 		try
@@ -34,7 +34,6 @@ class AuthenticateUserPreparedSession implements MessageComponentInterface
 						$session_data["firstname"] = $firstname_db;
 						$session_data["lastname"] = $lastname_db;
                         $contents = json_encode($session_data);
-                        $session_file = session_save_path()."/sess_".$session_id;
                         file_put_contents($session_file, $contents);
 					}
 					else
@@ -80,16 +79,19 @@ class AuthenticateUserPreparedSession implements MessageComponentInterface
             $cookies[$key] = $val;
         }
         $session_id = $cookies['PHPSESSID'];
-
-        $session_file = session_save_path()."/sess_".$session_id;
-        if(!file_exists($session_file)) // The session doesn't exist
-            return ;
+        $session_directory = session_save_path()."/json";
+        $session_file = $session_directory."/sess_".$session_id;
+        if(!file_exists($session_file)){
+            $reply_data = "Session not exist";
+            $from->send($reply_data);
+            return;
+        }
         $contents = file_get_contents($session_file);
         $session_data = json_decode($contents, true);
 
 		$reply_data = "";
 		$arr_data = json_decode($msg,true);
-		$this->sql_authenticate_user($arr_data, $from, $session_id, $session_data);
+		$this->sql_authenticate_user($arr_data, $from, $session_file, $session_data);
 	}
 
 	public function onClose(ConnectionInterface $conn)
